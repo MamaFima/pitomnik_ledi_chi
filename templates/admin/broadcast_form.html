@@ -1,0 +1,24 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>📢 Отправка рассылки</h1>
+<form method="post">
+    {% csrf_token %}
+
+    <p>Выбрано пользователей: {{ users|length }}</p>
+
+    <label for="id_message">Текст рассылки:</label>
+    <textarea name="message" id="id_message" rows="5" cols="60" required></textarea>
+
+    <!-- ✅ Корректно передаём _selected_action -->
+    {% for user in users %}
+        <input type="hidden" name="_selected_action" value="{{ user.pk }}">
+    {% endfor %}
+
+    <input type="hidden" name="action" value="send_broadcast">
+
+    <button type="submit" name="apply">📨 Отправить сообщение</button>
+</form>
+{% endblock %}
+
+
