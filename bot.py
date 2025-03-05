@@ -11,8 +11,13 @@ from aiogram import types
 
 from config import BOT_TOKEN  # Убедись, что в config.py есть BOT_TOKEN
 from handlers import ai_agent  # ✅ Подключаем AI-обработчик
-
 from handlers import start, forms  # Добавляем forms
+import threading
+from integrations.tasks import run_scheduler
+
+# Запускаем фоновый процесс проверки записей
+scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
+scheduler_thread.start()
 
 
 bot = Bot(token=BOT_TOKEN)
@@ -40,3 +45,4 @@ async def main():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
+
