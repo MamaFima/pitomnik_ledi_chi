@@ -7,7 +7,7 @@ from users.models import PuppyRequest
 from aiogram.utils.markdown import hbold
 
 # Телеграм-аккаунт хозяйки питомника
-OWNER_CHAT_ID = 183208176  # Заменить на реальный ID хозяйки
+OWNER_CHAT_ID = 183208176  # ✅ ID чата с хозяином питомника
 
 async def handle_puppy_request(message: types.Message):
     print(f"🐶 Обработчик 'Хочу щенка!' сработал для {message.from_user.id}")  # ➡️ Отладка
@@ -38,19 +38,20 @@ async def send_telegram_message(chat_id, text):
 
 
 def save_application_and_notify(data):
-    print("📡 Попытка сохранить заявку в БД...")  # Проверяем, вызывается ли вообще
+    print("📡 Попытка сохранить заявку в БД...")
     try:
         application = PuppyRequest.objects.create(**data)
-        print(f"✅ Заявка от {application.name} сохранена в БД!")  # Подтверждаем в терминале
+        print(f"✅ Заявка от {application.name} сохранена в БД!")
 
-
+        # 🚀 Отладка перед отправкой
+        print(f"📞 Телефон перед отправкой: {application.phone}")
 
         # Формируем сообщение
         message_text = (
             f"🐶 Новая анкета на щенка!\n\n"
             f"👤 {application.name}\n"
             f"📍 {application.city}, {application.country}\n"
-            f"📞 {application.phone}\n"
+            f"📞 Телефон: {str(application.phone).strip()}\n"
             f"🎨 Окрас: {application.color}\n"
             f"⚖ Вес: {application.adult_weight}\n"
             f"💰 Бюджет: {application.budget}\n"
@@ -58,12 +59,15 @@ def save_application_and_notify(data):
             f"✍ {application.purpose}\n"
         )
 
-        print(f"📡 Отправляем сообщение в Telegram хозяйке {OWNER_CHAT_ID}")  # ➡️ Отладка
-        async_to_sync(send_telegram_message)(OWNER_CHAT_ID, message_text)
-        print("✅ Сообщение отправлено в Telegram!")  # ➡️ Отладка
+        print(f"📡 Отправляем сообщение в Telegram хозяйке {OWNER_CHAT_ID}")
+
+        # 🚀 Используем asyncio.run() вместо async_to_sync
+        import asyncio
+        asyncio.run(send_telegram_message(OWNER_CHAT_ID, message_text))
+
+        print("✅ Сообщение отправлено в Telegram!")
 
         return True
     except Exception as e:
         print(f"❌ Ошибка при сохранении анкеты или отправке в Telegram: {e}")
         return False
-
