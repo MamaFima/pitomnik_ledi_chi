@@ -50,7 +50,7 @@ class VisitorAppointment(models.Model):
     date = models.DateField(verbose_name="Дата посещения")
     time = models.TimeField(verbose_name="Время посещения")
     chat_id = models.BigIntegerField(null=True, blank=True, verbose_name="Telegram ID")
-    created_at = models.DaksteTimeField(auto_now_add=True, verbose_name="Дата создания записи")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания записи")
 
     class Meta:
         verbose_name = "Запись на посещение"  # ✅ Название в единственном числе
