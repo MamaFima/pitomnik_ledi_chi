@@ -7,7 +7,9 @@ from .models import User
 from config import BOT_TOKEN
 import logging
 from django.contrib import admin
-from .models import PuppyRequest
+from .models import PuppyRequest  # ✅ Добавляем импорт
+from users.models import VisitorAppointment
+
 
 logger = logging.getLogger(__name__)  # ✅ Логгер
 
@@ -107,9 +109,6 @@ def register_user(user_id, username, full_name):
 
 
 
-
-
-
 @admin.register(PuppyRequest)
 class PuppyRequestAdmin(admin.ModelAdmin):
     list_display = ("name", "phone", "city", "gender", "budget", "created_at")
@@ -125,6 +124,18 @@ class PuppyRequestAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("created_at",)  # Дата заявки недоступна для редактирования
 
+@admin.register(VisitorAppointment)
+class VisitorAppointmentAdmin(admin.ModelAdmin):
+    list_display = ("full_name", "phone", "date", "time", "chat_id", "created_at")
+    search_fields = ("full_name", "phone", "date")
+    list_filter = ("date",)
+
+    fieldsets = (
+        ("Данные посетителя", {"fields": ("full_name", "phone", "chat_id")}),
+        ("Информация о визите", {"fields": ("date", "time")}),
+    )
+
+    readonly_fields = ("date", "time")  # Дата и время недоступны для редактирования
 
 
 
