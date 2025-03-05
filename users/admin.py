@@ -130,6 +130,7 @@ class VisitorAppointmentAdmin(admin.ModelAdmin):
     search_fields = ("full_name", "phone", "date")
     list_filter = ("date",)
 
+
     fieldsets = (
         ("Данные посетителя", {"fields": ("full_name", "phone", "chat_id")}),
         ("Информация о визите", {"fields": ("date", "time")}),
@@ -140,4 +141,10 @@ class VisitorAppointmentAdmin(admin.ModelAdmin):
 
 
 
+    fieldsets = (
+        ("Данные посетителя", {"fields": ("full_name", "phone", "chat_id")}),
+        ("Информация о визите", {"fields": ("date", "time")}),
+    )
+
+    readonly_fields = ("date", "time")  # Дата и время недоступны для редактирования
 
