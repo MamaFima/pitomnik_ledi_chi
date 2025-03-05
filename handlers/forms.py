@@ -58,3 +58,4 @@ async def handle_google_form(message: Message):
 
     except Exception as e:
         await message.answer(f"❌ Ошибка обработки анкеты: {e}")
+
