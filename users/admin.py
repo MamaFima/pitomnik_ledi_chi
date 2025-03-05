@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect
 from .models import User
 from config import BOT_TOKEN
 import logging
+from django.contrib import admin
+from .models import PuppyRequest
 
 logger = logging.getLogger(__name__)  # ✅ Логгер
 
@@ -108,7 +110,7 @@ def register_user(user_id, username, full_name):
 
 
 
-# ✅ Регистрируем `PuppyRequestAdmin`, если ещё не зарегистрировано
+@admin.register(PuppyRequest)
 class PuppyRequestAdmin(admin.ModelAdmin):
     list_display = ("name", "phone", "city", "gender", "budget", "created_at")
     search_fields = ("name", "phone", "city")
@@ -121,7 +123,11 @@ class PuppyRequestAdmin(admin.ModelAdmin):
         ("Дополнительные параметры", {"fields": ("purpose", "budget", "delivery_needed")}),
         ("Дата заявки", {"fields": ("created_at",)}),
     )
-    readonly_fields = ("created_at",)
+    readonly_fields = ("created_at",)  # Дата заявки недоступна для редактирования
+
+
+
+
 
 
 
