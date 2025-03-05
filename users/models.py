@@ -39,3 +39,22 @@ class PuppyRequest(models.Model):
         verbose_name = "Заявка на щенка"
         verbose_name_plural = "Заявки на щенков"
 # Create your models here.
+
+
+from django.db import models
+
+class VisitorAppointment(models.Model):
+    """Модель записи посетителя в питомник"""
+    full_name = models.CharField(max_length=255, verbose_name="ФИО")
+    phone = models.CharField(max_length=20, verbose_name="Телефон")
+    date = models.DateField(verbose_name="Дата посещения")
+    time = models.TimeField(verbose_name="Время посещения")
+    chat_id = models.BigIntegerField(null=True, blank=True, verbose_name="Telegram ID")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания записи")
+
+    class Meta:
+        verbose_name = "Запись на посещение"  # ✅ Название в единственном числе
+        verbose_name_plural = "Записи на посещение"  # ✅ Название во множественном числе
+
+    def __str__(self):
+        return f"{self.full_name} - {self.date} {self.time}"
